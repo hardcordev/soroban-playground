@@ -2,7 +2,6 @@
 
 import React, { useEffect, useMemo } from "react";
 import {
-  Background,
   Controls,
   MarkerType,
   MiniMap,
@@ -11,6 +10,7 @@ import {
   ReactFlowProvider,
   useReactFlow,
 } from "reactflow";
+import Background from "reactflow";
 import type { Edge, Node } from "reactflow";
 import "reactflow/dist/style.css";
 import { GitBranchPlus } from "lucide-react";
