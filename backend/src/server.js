@@ -79,7 +79,7 @@ app.use((req, res, next) => {
 });
 
 // Rate limiting
-app.use(rateLimitMiddleware('global'));
+// app.use(rateLimitMiddleware('global'));
 
 // Routes
 app.use('/api', apiRouter);

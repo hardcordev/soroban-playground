@@ -8,6 +8,7 @@ import v2Compile from './v2/compile.js';
 import v2Deploy from './v2/deploy.js';
 import v2Invoke from './v2/invoke.js';
 import v2Identity from './v2/identity.js';
+import v2Lottery from './v2/lottery.js';
 import eventsRouter from './events.js';
 import patentsRouter from './patents.js';
 import tokenBurnRouter from './tokenBurn.js';
@@ -38,18 +39,20 @@ router.get('/versions', (req, res) => {
 const v1Router = express.Router();
 v1Router.use(versionTransformer('v1'));
 v1Router.use('/compile', v1Compile);
-v1Router.use('/deploy', rateLimitMiddleware('deploy'), v1Deploy);
-v1Router.use('/invoke', rateLimitMiddleware('invoke'), v1Invoke);
-v1Router.use('/identity', rateLimitMiddleware('invoke'), v1Identity);
+v1Router.use('/deploy', v1Deploy);
+v1Router.use('/invoke', v1Invoke);
+v1Router.use('/identity', v1Identity);
+v1Router.use('/lottery', v2Lottery);
 
 // v2 Routes
 const v2Router = express.Router();
 v2Router.use(versionTransformer('v2'));
 v2Router.use(requestTransformerV2); // Optional: transform v1-style requests to v2 if needed (e.g., if we had a single implementation)
 v2Router.use('/compile', v2Compile);
-v2Router.use('/deploy', rateLimitMiddleware('deploy'), v2Deploy);
-v2Router.use('/invoke', rateLimitMiddleware('invoke'), v2Invoke);
-v2Router.use('/identity', rateLimitMiddleware('invoke'), v2Identity);
+v2Router.use('/deploy', v2Deploy);
+v2Router.use('/invoke', v2Invoke);
+v2Router.use('/identity', v2Identity);
+v2Router.use('/lottery', v2Lottery);
 
 // Register versioned routes
 router.use('/v1', v1Router);
@@ -61,19 +64,16 @@ router.use('/compile', versionTransformer('v1'), v1Compile);
 router.use(
   '/deploy',
   versionTransformer('v1'),
-  rateLimitMiddleware('deploy'),
   v1Deploy
 );
 router.use(
   '/invoke',
   versionTransformer('v1'),
-  rateLimitMiddleware('invoke'),
   v1Invoke
 );
 router.use(
   '/identity',
   versionTransformer('v1'),
-  rateLimitMiddleware('invoke'),
   v1Identity
 );
 router.use('/events', eventsRouter);

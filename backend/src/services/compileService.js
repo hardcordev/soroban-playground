@@ -28,7 +28,10 @@ async function loadCacheEntryFromCache(hash) {
   const artifactHit = artifacts.get(hash);
   if (artifactHit?.path) {
     // Verify the WASM file actually exists on disk
-    const exists = await fs.stat(artifactHit.path).then(() => true).catch(() => false);
+    const exists = await fs
+      .stat(artifactHit.path)
+      .then(() => true)
+      .catch(() => false);
     if (exists) {
       // Re-populate the LRU cache so future lookups are fast
       cacheIndex.set(hash, artifactHit);
@@ -356,7 +359,9 @@ async function compileOnce({ code, dependencies = {}, requestId }) {
         try {
           const fileStat = await fs.stat(hit.path);
           sizeBytes = fileStat.size;
-        } catch { /* ignore */ }
+        } catch {
+          /* ignore */
+        }
       }
 
       return {
