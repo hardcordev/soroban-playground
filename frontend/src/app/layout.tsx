@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { GraphQLProvider } from "../components/providers/GraphQLProvider";
+import { WalletProvider } from "../components/providers/WalletProvider";
 import SidebarShell from "../components/Sidebar";
 
 export const metadata: Metadata = {
@@ -17,11 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-[#060c18] text-[#e6edf7] antialiased">
-        <GraphQLProvider>
-          <SidebarShell>
-            {children}
-          </SidebarShell>
-        </GraphQLProvider>
+        <WalletProvider>
+          <GraphQLProvider>
+            <SidebarShell>
+              {children}
+            </SidebarShell>
+          </GraphQLProvider>
+        </WalletProvider>
       </body>
     </html>
   );
