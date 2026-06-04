@@ -1,7 +1,7 @@
 {
   "name": "backend",
   "version": "1.0.0",
-  "description": "Production-grade search API for project funding platform",
+  "description": "Soroban Playground backend API",
   "main": "src/server.js",
   "type": "module",
   "scripts": {
@@ -13,22 +13,10 @@
     "prepare": "npm run build",
     "start": "node src/server.js",
     "dev": "nodemon src/server.js",
-    "init-db": "node src/database/init.js",
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
-    "test:unit": "jest tests/*.test.js",
-    "test:integration": "jest tests/syntheticAssets.integration.test.js",
-    "test:e2e": "jest tests/syntheticAssets.e2e.test.js",
-    "test:synthetic": "jest tests/syntheticAssets.*.test.js",
-    "test:all": "npm run test:unit && npm run test:synthetic"
+    "test": "jest",
+    "init-db": "node src/database/init.js"
   },
-  "keywords": [
-    "search",
-    "fts",
-    "fuzzy",
-    "api"
-  ],
+  "keywords": ["soroban", "stellar", "playground"],
   "author": "",
   "license": "MIT",
   "dependencies": {
