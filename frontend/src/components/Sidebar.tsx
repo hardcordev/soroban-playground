@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useWallet } from "./providers/WalletProvider";
+import { useFreighterWallet } from "@/hooks/useFreighterWallet";
 import {
   Code2,
   BookOpen,
@@ -34,7 +34,7 @@ import {
   ChevronDown,
   LayoutGrid,
   Search,
-  Settings
+  Library
 } from "lucide-react";
 
 type NavItem = {
@@ -51,7 +51,7 @@ type NavGroup = {
 
 export default function SidebarShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const wallet = useWallet();
+  const wallet = useFreighterWallet();
   const [isOpen, setIsOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>({
@@ -67,13 +67,12 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
       groupName: "Core IDE & Ops",
       items: [
         { name: "IDE Playground", href: "/playground", icon: Code2 },
-        { name: "Wallet Management", href: "/wallet-management", icon: Settings },
         { name: "Compile Dashboard", href: "/compile-dashboard", icon: Zap },
         { name: "Storage Browser", href: "/storage-browser", icon: Database },
         { name: "Docs & Reference", href: "/docs", icon: BookOpen },
         { name: "Audit Explorer", href: "/audit", icon: Shield },
-        { name: "Storage Browser", href: "/storage-browser", icon: Database },
         { name: "Search Utility", href: "/search", icon: Search },
+        { name: "Template Library", href: "/template-library", icon: Library },
         { name: "Ledger Migration", href: "/migration", icon: Send },
         { name: "Rate Limits", href: "/rate-limits", icon: Sliders }
       ]
@@ -245,13 +244,10 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
         {/* Wallet footer connection */}
         {!collapsed && (
           <div className="p-3 border-t border-slate-800/60 bg-slate-950/40">
-            <Link 
-              href="/wallet-management"
-              className="block rounded-xl bg-slate-900/60 border border-slate-800/40 p-2.5 hover:bg-slate-800/60 transition-colors group"
-            >
+            <div className="rounded-xl bg-slate-900/60 border border-slate-800/40 p-2.5">
               <div className="flex items-center justify-between gap-2 mb-2">
-                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider group-hover:text-slate-300 transition-colors">
-                  {wallet.activeWallet ? `${wallet.activeWallet} Connected` : "No Wallet Linked"}
+                <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
+                  Freighter Connected
                 </span>
                 <span className={`h-1.5 w-1.5 rounded-full ${
                   wallet.status === "connected" ? "bg-emerald-400 animate-pulse" : "bg-slate-600"
@@ -268,12 +264,16 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
                   </p>
                 </div>
               ) : (
-                <div className="flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-teal-500/10 border border-teal-500/30 text-teal-300 text-[10px] font-semibold tracking-wider uppercase">
+                <button
+                  onClick={wallet.connect}
+                  disabled={wallet.status === "connecting"}
+                  className="w-full flex items-center justify-center gap-1.5 py-1.5 rounded-lg bg-teal-500/10 hover:bg-teal-500/20 border border-teal-500/30 hover:border-teal-500/40 text-teal-300 text-[10px] font-semibold tracking-wider uppercase transition-colors"
+                >
                   <Zap size={11} />
-                  Manage Wallets
-                </div>
+                  {wallet.status === "connecting" ? "Linking..." : "Connect"}
+                </button>
               )}
-            </Link>
+            </div>
           </div>
         )}
       </aside>
@@ -338,11 +338,7 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
         </div>
 
         <div className="p-4 border-t border-slate-800/60 bg-slate-950/40">
-          <Link 
-            href="/wallet-management"
-            onClick={() => setIsOpen(false)}
-            className="rounded-xl bg-slate-900 border border-slate-800 p-3 block"
-          >
+          <div className="rounded-xl bg-slate-900 border border-slate-800 p-3">
             <div className="flex items-center justify-between mb-2">
               <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">
                 Wallet Status
@@ -357,11 +353,14 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
                 {formatAddress(wallet.address)}
               </p>
             ) : (
-              <div className="w-full flex items-center justify-center gap-1 bg-teal-600 hover:bg-teal-500 text-slate-950 text-[10px] font-semibold py-1.5 rounded-lg transition-colors">
-                Manage Wallet
-              </div>
+              <button
+                onClick={wallet.connect}
+                className="w-full flex items-center justify-center gap-1 bg-teal-600 hover:bg-teal-500 text-slate-950 text-[10px] font-semibold py-1.5 rounded-lg transition-colors"
+              >
+                Connect Wallet
+              </button>
             )}
-          </Link>
+          </div>
         </div>
       </aside>
 
@@ -403,21 +402,22 @@ export default function SidebarShell({ children }: { children: React.ReactNode }
 
             {/* Main Action Wallet Button */}
             {wallet.status === "connected" && wallet.address ? (
-              <Link
-                href="/wallet-management"
+              <button
+                onClick={wallet.disconnect}
                 className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 text-xs font-medium transition-all hover:bg-slate-800 hover:border-slate-700 shadow-sm"
               >
                 <div className="h-2 w-2 rounded-full bg-emerald-400 animate-pulse" />
                 <span className="font-mono text-xs">{formatAddress(wallet.address)}</span>
-              </Link>
+              </button>
             ) : (
-              <Link
-                href="/wallet-management"
-                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-400 to-teal-500 hover:from-teal-300 hover:to-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-[0_0_15px_rgba(45,212,191,0.2)] hover:shadow-[0_0_20px_rgba(45,212,191,0.3)]"
+              <button
+                onClick={wallet.connect}
+                disabled={wallet.status === "connecting"}
+                className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-gradient-to-r from-teal-400 to-teal-500 hover:from-teal-300 hover:to-teal-400 text-slate-950 font-semibold text-xs transition-all shadow-[0_0_15px_rgba(45,212,191,0.2)] hover:shadow-[0_0_20px_rgba(45,212,191,0.3)] disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 <Zap size={13} className={wallet.status === "connecting" ? "animate-pulse" : ""} />
                 {wallet.status === "connecting" ? "Connecting..." : "Link Wallet"}
-              </Link>
+              </button>
             )}
           </div>
         </header>
