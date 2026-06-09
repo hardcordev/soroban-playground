@@ -55,6 +55,10 @@ No setup required. Write Rust smart contracts directly in your browser.
 > - **Wallet & UX Refinement:** Perfect the Freighter wallet integration and completely polish the UI/UX to ensure a premium, mainnet-ready user experience.
 > - **Advanced IDE Features:** Finish implementing our in-browser advanced debugging tools, real-time multi-contract simulators, and visual transaction trace graphs.
 
+### 🌐 Live Deployments
+- **Frontend (Vercel)**: [https://soroban-playground-frontend-f1rz-fyzeokbr5.vercel.app](https://soroban-playground-frontend-f1rz-fyzeokbr5.vercel.app)
+- **Backend API (Render)**: [https://soroban-playground.onrender.com](https://soroban-playground.onrender.com)
+
 ## Features
 - **Code Editor**: Monaco-based editor with Rust syntax highlighting, auto-formatting, and contract templates.
 - **In-browser Compilation**: Compile Soroban contracts online and view logs/WASM outputs.
