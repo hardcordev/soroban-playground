@@ -55,6 +55,15 @@ class RedisService {
 
   init() {
     try {
+      // If no REDIS_URL is provided and we are in production, default to fallback to avoid localhost connection spam
+      if (!process.env.REDIS_URL && process.env.NODE_ENV === 'production') {
+        console.log(
+          'No REDIS_URL provided in production, switching to fallback mode'
+        );
+        this.isFallbackMode = true;
+        return;
+      }
+
       this.client = new Redis(REDIS_URL, {
         maxRetriesPerRequest: 1,
         connectTimeout: 5000,
@@ -72,7 +81,11 @@ class RedisService {
       });
 
       this.client.on('error', (err) => {
-        console.error('Redis Error:', err.message);
+        if (!this.isFallbackMode) {
+          if (err.code !== 'ECONNREFUSED' && err.code !== 'ETIMEDOUT') {
+            console.error('Redis Error:', err.message || err);
+          }
+        }
         if (err.code === 'ECONNREFUSED' || err.code === 'ETIMEDOUT') {
           this.isFallbackMode = true;
         }
@@ -84,7 +97,7 @@ class RedisService {
         this.defineScripts();
       });
     } catch (err) {
-      console.error('Failed to initialize Redis:', err.message);
+      console.error('Failed to initialize Redis:', err.message || err);
       this.isFallbackMode = true;
     }
   }

@@ -154,6 +154,10 @@ function getRuntimeInfo() {
 }
 
 // ─── Health Check Endpoint ────────────────────────────────────────────────────
+app.get('/', (_req, res) => {
+  res.status(200).send('Soroban Playground Backend API is running.');
+});
+
 app.get('/api/health', (_req, res) => {
   try {
     const memory = getMemoryInfo();
