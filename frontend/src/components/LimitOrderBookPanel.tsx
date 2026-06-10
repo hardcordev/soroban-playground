@@ -51,7 +51,7 @@ interface Props {
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
-const DEFAULT_API = "http://localhost:5000/api/orderbook";
+const DEFAULT_API = (process.env.NEXT_PUBLIC_API_URL || "https://soroban-playground.onrender.com/api").replace(/\/$/, "") + "/orderbook";
 const POLL_INTERVAL_MS = 3000;
 
 // ── Helpers ───────────────────────────────────────────────────────────────────

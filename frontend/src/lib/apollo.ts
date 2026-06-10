@@ -2,7 +2,7 @@ import { ApolloClient, InMemoryCache, HttpLink, ApolloLink, from } from '@apollo
 import { map } from 'rxjs';
 
 const httpLink = new HttpLink({
-  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'http://localhost:5000/graphql',
+  uri: process.env.NEXT_PUBLIC_GRAPHQL_ENDPOINT || 'https://soroban-playground.onrender.com/graphql',
 });
 
 // Optional: Add a logging link for debugging DataLoader batching

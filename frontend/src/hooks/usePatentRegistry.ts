@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from 'react';
 
-const API = (process.env.NEXT_PUBLIC_API_BASE_URL ?? 'http://localhost:5000').replace(/\/$/, '');
+const API = (process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com").replace(/\/$/, '');
 
 async function apiFetch(path: string, options?: RequestInit) {
   const res = await fetch(`${API}${path}`, {

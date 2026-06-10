@@ -6,7 +6,7 @@ export interface TreasuryEvent {
   timestamp: string;
 }
 
-export function useTreasuryWebSocket(url = 'ws://localhost:5000/ws') {
+export function useTreasuryWebSocket(url = (process.env.NEXT_PUBLIC_BACKEND_URL || 'https://soroban-playground.onrender.com').replace('https://', 'wss://').replace('http://', 'ws://') + '/ws') {
   const [events, setEvents] = useState<TreasuryEvent[]>([]);
   const [isConnected, setIsConnected] = useState(false);
 

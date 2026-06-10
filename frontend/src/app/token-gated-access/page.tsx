@@ -9,7 +9,7 @@ import { Shield, ChevronRight, Activity } from "lucide-react";
 import TokenGatedAccessPanel from "@/components/TokenGatedAccessPanel";
 
 export default function TokenGatedAccessPage() {
-  const [apiBase, setApiBase] = useState("http://localhost:5000");
+  const [apiBase, setApiBase] = useState(process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com");
 
   useEffect(() => {
     if (process.env.NEXT_PUBLIC_API_URL) {

@@ -1,6 +1,6 @@
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_URL?.replace(/\/$/, "") ||
-  "http://localhost:5000/api";
+  "https://soroban-playground.onrender.com/api";
 
 export type PatentStatus = "Registered" | "Verified";
 export type LicenseStatus = "Open" | "Accepted";

@@ -73,7 +73,7 @@ function TierBadge({ tier }: { tier: Tier }) {
 
 // ── Main Component ────────────────────────────────────────────────────────────
 
-export default function TokenGatedAccessPanel({ apiBase = "http://localhost:5000" }: Props) {
+export default function TokenGatedAccessPanel({ apiBase = process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com" }: Props) {
   const base = `${apiBase}/api/token-gated`;
 
   // ── State ──────────────────────────────────────────────────────────────────

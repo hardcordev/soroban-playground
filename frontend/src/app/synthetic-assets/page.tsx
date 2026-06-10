@@ -29,7 +29,7 @@ import {
 
 const DEFAULT_API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, "") ||
-  "http://localhost:5000";
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com";
 const DEFAULT_CONTRACT_ID =
   process.env.NEXT_PUBLIC_SYNTHETIC_CONTRACT_ID?.trim() || "";
 const DEMO_ACCOUNT = "GDEMO4MV6L6QY6P4UQBW5SC4R6X4P7WALLET";

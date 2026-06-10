@@ -25,7 +25,7 @@ import {
 // ── Constants ─────────────────────────────────────────────────────────────────
 
 const API_BASE =
-  (process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:5000").replace(/\/$/, "");
+  (process.env.NEXT_PUBLIC_API_BASE_URL ?? process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com").replace(/\/$/, "");
 
 const CURVE_TYPES = ["Linear", "Exponential"] as const;
 type CurveType = (typeof CURVE_TYPES)[number];

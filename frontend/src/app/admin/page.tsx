@@ -22,7 +22,7 @@ import {
 
 const API_BASE_URL =
   process.env.NEXT_PUBLIC_API_BASE_URL?.replace(/\/$/, '') ||
-  'http://localhost:5000';
+  process.env.NEXT_PUBLIC_BACKEND_URL || "https://soroban-playground.onrender.com";
 
 const DEMO_EVENT = {
   eventType: 'pifp.payment',
